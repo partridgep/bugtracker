@@ -1,0 +1,20 @@
+{% extends 'home.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="welcome-page">
+    <h1 class="landingPage-logo">BugTracker</h1>
+    <div class="user-form">
+        <h1><a href="{% url 'signup' %}">Sign Up</a> | Login</h1>
+        {% if error_messsage %}<p class="red-text">{{ error_message }}</p>{% endif %}
+        <form method="POST" action='{% url "login" %}'>
+            {% csrf_token %}
+            {{ form | crispy }}
+            <input type="submit" class="btn btn-primary" value="Login"></input>
+            <input type="hidden" name="next" value="{{ next }}"></input>
+        </form>
+    </div>
+</div>
+    
+{% endblock %}

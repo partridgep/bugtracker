@@ -1,0 +1,18 @@
+{% extends 'extended-base.html' %}
+
+{% block child %}
+
+<h1>Projects List</h1>
+
+{% for project in projects %}
+<div class="card">
+    <a href="{% url 'detail' cat.id %}">
+        <div class="card-content">
+            <span class="card-title">{{ project.name }}</span>
+        </div>
+    </a>
+</div>
+{% endfor %}
+
+    
+{% endblock %}

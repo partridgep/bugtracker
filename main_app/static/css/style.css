@@ -2,6 +2,7 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
 main {
@@ -13,6 +14,13 @@ footer {
     text-align: right;
 }
 
+.welcome-page {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 101vh;
+}
+
 .landingPage-logo {
     height: 90vh;
     width: 50vw;
@@ -21,4 +29,13 @@ footer {
     justify-content: center;
     font-size: 70px;
     margin: 0;
+}
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: aliceblue;
+    padding: 20px;
+    width: 50vw;
 }
