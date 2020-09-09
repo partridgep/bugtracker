@@ -1,0 +1,17 @@
+{% extends 'extended-base.html' %}
+{% load crispy_forms_tags %}
+
+{% block child %}
+    <h1 class="display-2 title">Enter New Project</h1>
+
+    <form action="{% url 'project_create' %}" method="post" class="form">
+        {% if error_messsage %}<p class="red-text">{{ error_message }}</p>{% endif %}
+        {% csrf_token %}
+        <label for="pname">Project Name:</label><br>
+        <input type="text" name="pname"><br><br>
+        <label for="teammates">Enter email addresses of teammates for this project (seperated by commas):</label><br>
+        <input type="text" name="teammates"><br><br>
+        <input type="submit" value="Submit!" class="btn btn-success">
+    </form>
+
+{% endblock %}

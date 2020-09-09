@@ -17,10 +17,11 @@
             Projects
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Project 1</a>
-            <a class="dropdown-item" href="#">Project 2</a>
+            {% for project in projects %}
+            <a class="dropdown-item" href="#">{{ project.name }}</a>
+            {% endfor %}
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">View All</a>
+            <a class="dropdown-item" href="{% url 'project_create' %}">+ Add Project</a>
           </div>
         </li>
       </ul>

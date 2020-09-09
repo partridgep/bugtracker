@@ -39,3 +39,16 @@ footer {
     padding: 20px;
     width: 50vw;
 }
+
+.main-page-lists {
+    margin-top: 75px;
+}
+
+.form {
+    width: 65vw;
+    margin: 0 auto;
+}
+
+.title {
+    margin: 3% auto;
+}

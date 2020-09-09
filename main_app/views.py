@@ -1,9 +1,15 @@
 from django.shortcuts import render, redirect
 from .models import Project
+from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 
 def home(request):
   return redirect('index')
@@ -34,3 +40,21 @@ def signup(request):
 def projects_index(request):
     projects = Project.objects.filter(teammates=request.user)
     return render(request, 'projects/index.html', {'projects': projects})
+
+def add_project(request):
+    if request.method == "POST":
+      print(request.POST.get("teammates"))
+      emailStr = request.POST.get("teammates")
+      emails = emailStr.split(", ")
+      print(emails)
+      users_already_signed_up = User.objects.all()
+      found_users = User.objects.filter(email__in = emails)
+      print(found_users)
+      for user in found_users:
+        emails.remove(user.email)
+
+
+    
+
+    return render(request, 'projects/create.html')
+

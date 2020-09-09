@@ -1,0 +1,16 @@
+{% extends 'extended-base.html' %}
+{% load crispy_forms_tags %}
+
+{% block child %}
+    {% if object %}
+    <h1 class="display-2 title">Edit <span class="teal-text">{{object.name}}</span></h1>
+    {% else %}
+    <h1 class="display-2 title">Enter New Project</h1>
+    {% endif %}
+    <form action="" method="post" class="form">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <input type="submit" value="Submit!" class="btn btn-success">
+    </form>
+
+{% endblock %}
