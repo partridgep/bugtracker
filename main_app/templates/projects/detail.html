@@ -4,8 +4,30 @@
 
 <div class="container main-page-lists">
     <h1 class="display-2 title">{{ project.name }}</h1>
+
+        {% if does_have_teammates %}
+        <div class="d-inline">
+            <h3>Teammates:</h3>
+                <p>{% for teammate in project.teammates.all %}
+                    {% if teammate != current_user %}
+                        <span>{{ teammate.username }}</span>
+                    {% endif %}
+                {% endfor %}</p>
+        </div>
+        {% endif %}
+
+        {% if project.bug_set.count %}
+        <div class="d-inline">
+            <h3>Bugs:</h3>
+                <p>{% for bug in project.bug_set.all %}
+                        <span>{{ bug.title }}</span>
+                {% endfor %}</p>
+        </div>
+        {% else %}
+        <h3>No Bugs Yet</h3>
+        {% endif %}
+
+        <a href="{% url 'project_bug_create' project.id %}">+ Add Bug</a>
+
 </div>
-
-
-    
 {% endblock %}

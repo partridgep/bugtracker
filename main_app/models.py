@@ -28,6 +28,9 @@ class Bug(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('bug_detail', kwargs={'bug_id': self.id})
+
 class Comment(models.Model):
     text = models.TextField(max_length=500)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

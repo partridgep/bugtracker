@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Project
+from .models import Project, Bug
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
@@ -139,7 +139,34 @@ def add_project(request):
 def project_detail(request, project_id):
     projects = Project.objects.filter(teammates=request.user)
     project = Project.objects.get(id=project_id)
+    does_have_teammates = project.teammates.all().count() > 1
+    current_user = request.user
+    print(project.teammates.all())
     return render(request, 'projects/detail.html', {
         'project': project,
+        'does_have_teammates': does_have_teammates,
+        'current_user': current_user,
         'projects': projects
     })
+
+@login_required
+def add_bug_to_project(request, project_id):
+    projects = Project.objects.filter(teammates=request.user)
+    print(projects)
+    project = Project.objects.get(id=project_id)
+    user = request.user
+
+    # if submitting the form
+    if request.method == "POST":
+      # create project in database
+      title = request.POST.get("bug_title")
+      description = request.POST.get("description")
+      file_name = request.POST.get("file_name")
+      bug = Bug(title=title, description=description, file_name=file_name, project=project, user=user)
+      bug.save()
+
+      # redirect to project page
+      return redirect('project_detail', project_id=project.id)
+
+    # if GET request, show the form
+    return render(request, 'bugs/create_project_bug.html', {'project': project})

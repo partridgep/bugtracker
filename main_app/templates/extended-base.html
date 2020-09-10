@@ -18,7 +18,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% for project in projects %}
-            <a class="dropdown-item" href="#">{{ project.name }}</a>
+            <a class="dropdown-item" href="{% url 'project_detail' project.id  %}">{{ project.name }}</a>
             {% endfor %}
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{% url 'project_create' %}">+ Add Project</a>
