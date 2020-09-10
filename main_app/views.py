@@ -11,6 +11,10 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
+
 def home(request):
   return redirect('index')
 
@@ -41,20 +45,101 @@ def projects_index(request):
     projects = Project.objects.filter(teammates=request.user)
     return render(request, 'projects/index.html', {'projects': projects})
 
+
+def generate_username(email):
+    username = email.split('@')[0]
+    try:
+      user_with_existing_username = User.objects.get(username = username)
+      print(f'user with existing username = {user_with_existing_username}')
+      if user_with_existing_username:
+        username += '1'
+    except:
+      pass
+    return username
+
+@login_required
 def add_project(request):
+    # get all projects
+    projects = Project.objects.filter(teammates=request.user)
+
+    # if submitting the form
     if request.method == "POST":
+      # create project in database
+      project_name = request.POST.get("pname")
+      p = Project(name=project_name)
+      p.save()
+
+      # add current user as teammate
+      current_user = request.user
+      p.teammates.add(current_user)
+      p.save()
+
       print(request.POST.get("teammates"))
+      # get string with all emails
       emailStr = request.POST.get("teammates")
+      # separate emails
       emails = emailStr.split(", ")
       print(emails)
+      # find ALL users in database
       users_already_signed_up = User.objects.all()
+      # see if any match the list of emails
       found_users = User.objects.filter(email__in = emails)
       print(found_users)
+
       for user in found_users:
+        # send invite email to all found users
+        msg_plain = render_to_string('emails/added_to_project.txt', {'project_name': project_name})
+        msg_html = render_to_string('emails/added_to_project.html', {'project_name': project_name})
+        send_mail(
+        f'BugTracker: You\'ve been invited to {project_name}',
+        msg_plain,
+        settings.EMAIL_HOST_USER,
+        [f'{user.email}'],
+        html_message=msg_html,
+        fail_silently=False,
+        )
+        # add user to project
+        user_object = User.objects.get(email=user.email)
+        p.teammates.add(user_object)
+        p.save()
+        # finally remove email from list of emails
         emails.remove(user.email)
 
+      if len(emails) and emails[0] != '':
+        # remaining emails will be new users
+        for email in emails:
+          # create new user
+          random_password = User.objects.make_random_password()
+          generated_username = generate_username(email)
+          new_user = User.objects.create_user(generated_username, email, random_password)
+          new_user.save()
+          # send invite email
+          msg_plain = render_to_string('emails/new_user_email.txt', {'project_name': project_name, 'username': generated_username, 'password': random_password})
+          msg_html = render_to_string('emails/new_user_email.html', {'project_name': project_name, 'username': generated_username, 'password': random_password})
+          send_mail(
+          f'BugTracker: You\'ve been invited to {project_name}',
+          msg_plain,
+          settings.EMAIL_HOST_USER,
+          [f'{email}'],
+          html_message=msg_html,
+          fail_silently=False,
+          )
+          # add new user to project
+          new_user_object = User.objects.get(email=email)
+          p.teammates.add(new_user_object)
+          p.save()
 
-    
+      # redirect to project page
+      return redirect('project_detail', project_id=p.id)
 
-    return render(request, 'projects/create.html')
+    # if GET request, show the form
+    return render(request, 'projects/create.html', {'projects': projects})
 
+@login_required
+def project_detail(request, project_id):
+    projects = Project.objects.filter(teammates=request.user)
+    project = Project.objects.get(id=project_id)
+    return render(request, 'projects/detail.html', {
+        'project': project,
+        'projects': projects
+    })
