@@ -10,7 +10,7 @@
             <p class="resolved"> Resolved! </p>
             {% endif %}
     
-            <p>Logged by {{ bug.user }}</p>
+            <p>Logged by {{ bug.user }} <span class="bug-creation-time">{{bug.created_at}}</span></p>
     
             <p>Bug Description: {{ bug.description }}</p>
     

@@ -9,13 +9,20 @@ main {
   flex: 1 0 auto;
 }
 
-footer {
-  padding-top: 0;
-  text-align: right;
+#page-content {
+  flex: 1 0 auto;
+}
+
+#sticky-footer {
+  flex-shrink: none;
 }
 
 hr {
   width: 100%;
+}
+
+i {
+  margin: 0 5px;
 }
 
 .login-selector {
@@ -124,6 +131,15 @@ hr {
   padding: 2em;
 }
 
+figcaption, .bug-creation-time {
+  color: grey;
+  font-size: small;
+}
+
+.bug-creation-time {
+  margin-left: 10px;
+}
+
 .upload {
   background: linear-gradient(rgb(219, 214, 214), rgb(175, 184, 185));
   display: flex;
@@ -216,6 +232,29 @@ hr {
   font-size: 13px;
   color: grey;
 }
+
+/* Footer */
+
+footer {
+  padding-top: 0;
+  text-align: right;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-content p {
+  margin: 0 5px 0 0;
+}
+
+.social-link {
+  font-size: 30px;
+  margin-right: 5px;
+}
+
 
 /* ********
   GLITCH ANIMATION
