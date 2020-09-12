@@ -5,7 +5,7 @@
 <div class="container main-page-lists">
     <div class="row">
         <div class="col">
-            <h1>Projects List</h1>
+            <h1>Projects</h1>
             {% for project in projects %}
                 <div class="card-content">
                     <a href="{% url 'project_detail' project.id  %}">{{ project.name }}</a>
@@ -14,12 +14,32 @@
             <a href="{% url 'project_create' %}">+ Add Project</a>
         </div>
         <div class="col">
-            <h1>Bugs List</h1>
-            {% for project in projects %}
-                <div class="card-content">
-                    <span>Bug Example</span>
-                </div>
-            {% endfor %}
+
+            <div>
+                <h1>Unresolved Bugs</h1>
+                {% for project in projects %}
+                    {% for bug in project.bug_set.all %}
+                        {% if bug.resolved == False %}
+                        <p class="bug-preview"><a href="{% url 'bug_detail' bug.id %}">{{ bug.title }}</a> <span>/{{ project.name }}</span><span class="bug-preview-description">{{ bug.description |truncatewords:8 }}</span></p>
+                        {% endif %}
+                    {% endfor %}
+                {% if projects.count == 0 %}
+                <p>No unresolved bugs yet!</p>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <div>
+                <h1>Resolved Bugs</h1>
+                {% for project in projects %}
+                    {% for bug in project.bug_set.all %}
+                        {% if bug.resolved %}
+                        <p class="bug-preview"><a href="{% url 'bug_detail' bug.id %}">{{ bug.title }}</a> <span>/{{ project.name }}</span><span class="bug-preview-description">{{ bug.description |truncatewords:8 }}</span></p>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
         </div>
     </div>
 </div>

@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
-from .models import Project, Bug
+from .models import Project, Bug, Screenshot
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+import uuid
+import boto3
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
@@ -14,6 +17,9 @@ from django.views.generic.list import ListView
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
+
+S3_BASE_URL = "https://pp-bugtracker.s3.amazonaws.com/"
+BUCKET = "pp-bugtracker"
 
 def home(request):
   return redirect('index')
@@ -152,7 +158,6 @@ def project_detail(request, project_id):
 @login_required
 def add_bug_to_project(request, project_id):
     projects = Project.objects.filter(teammates=request.user)
-    print(projects)
     project = Project.objects.get(id=project_id)
     user = request.user
 
@@ -164,9 +169,60 @@ def add_bug_to_project(request, project_id):
       file_name = request.POST.get("file_name")
       bug = Bug(title=title, description=description, file_name=file_name, project=project, user=user)
       bug.save()
+      # print(bug.seen_by_bug_set.all())
 
-      # redirect to project page
-      return redirect('project_detail', project_id=project.id)
+      # redirect to bug detail page
+      return redirect('bug_detail', bug_id=bug.id)
 
     # if GET request, show the form
-    return render(request, 'bugs/create_project_bug.html', {'project': project})
+    return render(request, 'bugs/create_project_bug.html', {'project': project, 'projects': projects})
+
+@login_required
+def bug_detail(request, bug_id):
+  projects = Project.objects.filter(teammates=request.user)
+  bug = Bug.objects.get(id=bug_id)
+  user = request.user
+  return render(request, 'bugs/detail.html', {
+    'bug': bug,
+    'projects': projects
+  })
+
+@login_required
+def resolve_bug(request, bug_id):
+  projects = Project.objects.filter(teammates=request.user)
+  # would be good to log who resolved it
+  # user = request.user
+  bug = Bug.objects.get(id=bug_id)
+  bug.resolved = True
+  bug.save()
+  return redirect('bug_detail', bug_id=bug_id)
+
+@login_required
+def add_screenshot(request, bug_id):
+  projects = Project.objects.filter(teammates=request.user)
+  user = request.user
+  bug = Bug.objects.get(id=bug_id)
+  photo_file = request.FILES.get('photo-file', None)
+  if photo_file:
+    s3 = boto3.client('s3')
+    key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+    try:
+        s3.upload_fileobj(photo_file, BUCKET, key)
+        url = f"{S3_BASE_URL}{key}"
+        screenshot = Screenshot(url=url, bug_id=bug_id, user_id=user.id)
+        screenshot.save()
+    except ClientError as e:
+        logging.error(e)
+        print(e)
+  return redirect('bug_detail', bug_id=bug_id)
+
+@login_required
+def add_comment(request, bug_id):
+  projects = Project.objects.filter(teammates=request.user)
+  user = request.user
+  bug = Bug.objects.get(id=bug_id)
+  text = request.POST.get("text")
+  print(text)
+  bug.comment_set.create(text=text, user_id=user.id)
+  bug.save()
+  return redirect('bug_detail', bug_id=bug_id)

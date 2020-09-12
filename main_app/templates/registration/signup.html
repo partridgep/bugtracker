@@ -4,9 +4,13 @@
 {% block content %}
 
 <div class="welcome-page">
-    <h1 class="landingPage-logo">BugTracker</h1>
+    <div class="title-part">
+        <div class="title-wrapper">
+            <h1 class="landingPage-logo glitch" data-text="BugTracker">BugTracker</h1>
+        </div>
+    </div>
     <div class="user-form">
-        <h1>Sign Up | <a href="{% url 'login' %}">Login</a></h1>
+        <h1 class="login-selector">Sign Up | <a href="{% url 'login' %}">Login</a></h1>
         {% if error_messsage %}<p class="red-text">{{ error_message }}</p>{% endif %}
         <form method="POST" action="{% url 'signup' %}">
             {% csrf_token %}

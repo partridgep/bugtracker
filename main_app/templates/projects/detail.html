@@ -19,8 +19,8 @@
         {% if project.bug_set.count %}
         <div class="d-inline">
             <h3>Bugs:</h3>
-                <p>{% for bug in project.bug_set.all %}
-                        <span>{{ bug.title }}</span>
+                {% for bug in project.bug_set.all %}
+                        <p class="bug-preview"><a href="{% url 'bug_detail' bug.id %}">{{ bug.title }}</a> <span>/{{ bug.file_name }}</span><span class="bug-preview-description">{{ bug.description |truncatewords:8 }}</span></p>
                 {% endfor %}</p>
         </div>
         {% else %}

@@ -1,0 +1,86 @@
+{% extends 'extended-base.html' %}
+
+{% block child %}
+
+<div class="bug-display">
+    <div class="bug-left">
+        <h1 class="display-2 title">{{ bug.title }}</h1>
+    
+            {% if bug.resolved %}
+            <p class="resolved"> Resolved! </p>
+            {% endif %}
+    
+            <p>Logged by {{ bug.user }}</p>
+    
+            <p>Bug Description: {{ bug.description }}</p>
+    
+            <p>File where bug occurs: {{ bug.file_name }}</p>
+    
+            {% if bug.resolved == False %}
+
+            <div class="upload">
+                <p>Add Bug Screenshot:</p>
+                
+                <form 
+                    action="{% url 'add_screenshot' bug.id %}"
+                    enctype="multipart/form-data"
+                    method="POST"
+                    class="card-panel"
+                    >
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <div class="custom-file">
+                          <input name="photo-file" type="file" class="custom-file-input" id="inputGroupFile04">
+                          <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Upload">
+                </form>
+            </div>
+        
+            <form action="{% url 'resolve_bug' bug.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-success btn-lg" value="Mark as Resolved">
+            </form>
+        {% endif %}
+    </div>
+    
+    <div class="bug-right">
+        {% for screenshot in bug.screenshot_set.all %}
+            <figure>
+                <img src="{{screenshot.url}}" class="img-fluid" alt="bug screenshot">
+                <figcaption>Uploaded by {{ screenshot.user }} at {{ screenshot.created_at }}</figcaption>
+            </figure>
+            
+        {% empty %}
+            <div>No Screenshots</div>
+        {% endfor %}
+    </div>
+
+
+</div>
+
+<hr>
+
+<div class="bug-comment-section">
+    {% for comment in bug.comment_set.all %}
+        <div class="comment">
+            <p class="comment-date">{{ comment.created_at }}</p>
+            <p><span>{{ comment.user }}: </span>{{ comment.text }} </p>
+        </div>
+            
+        {% empty %}
+            <p>No Comments</p>
+        {% endfor %}
+
+        <form action="{% url 'add_comment' bug.id %}" method="post" class="comment-input">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="text"></label>
+                <textarea class="form-control" name="text" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-info">Add Comment</button>
+        </form>
+</div>
+
+{% endblock %}
