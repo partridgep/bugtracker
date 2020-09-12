@@ -20,6 +20,7 @@ You may access the Trello planning board at [this link](https://trello.com/b/DWa
 
 ## Wireframes
 
+Signup Page:
 ![Signup Page](https://i.imgur.com/u9GVzww.png)
 
 ![Main Display Page](https://i.imgur.com/CMqjhZP.png)

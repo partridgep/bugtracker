@@ -129,7 +129,7 @@ i {
 }
 
 .bug-right {
-  width: 50vw;
+  max-width: 50vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,6 +155,7 @@ figcaption, .bug-creation-time {
   padding: 1em;
   position: relative;
   border-radius: 3px;
+  max-width: 450px;
 }
 
 .upload::before,
@@ -204,6 +205,7 @@ figcaption, .bug-creation-time {
   align-items: center;
   flex-direction: column;
   min-height: 175px;
+  margin-bottom: 4rem;
 }
 
 .comment-input {
@@ -214,6 +216,7 @@ figcaption, .bug-creation-time {
 .comment-input button {
   position: absolute;
   right: 0;
+  /* bottom: 0; */
   margin-bottom: 20px;
 }
 
@@ -518,5 +521,70 @@ skew to change the 'thickness' of the glitch.*/
   }
   100% {
     transform: skew(1deg);
+  }
+}
+
+@media(max-width: 900px) {
+
+  .welcome-page {
+    flex-direction: column;
+    min-height: 100vh;
+    height: auto;
+  }
+
+  .title-part {
+    width: 100vw;
+    height: 15vh;
+  }
+
+  .user-form {
+    width: 100vw;
+    min-height: 85vh;
+  }
+
+}
+
+@media(max-width: 500px) {
+
+  .landingPage-logo {
+    font-size: 50px;
+  }
+
+  .login-selector {
+    font-size: 35px;
+  }
+
+  .main-page-lists {
+    margin: 2rem;
+    width: auto;
+  }
+  
+  .main-page-lists .row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .row .col {
+    padding-bottom: 3rem;
+  }
+
+  .title {
+    font-size: 50px;
+  }
+
+  .add_teammates {
+    margin-top: .5rem;
+  }
+}
+
+@media(max-width: 350px) {
+
+  .landingPage-logo {
+    font-size: 40px;
+  }
+
+  .login-selector {
+    font-size: 30px;
+    margin: 0 auto .5rem auto;
   }
 }
