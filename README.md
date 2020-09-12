@@ -4,6 +4,8 @@ A Django app for teams to log all the bugs in their projects' code.
 
 ## Getting started
 
+Click [here](https://git.heroku.com/bugtracker-pp.git) to get started (please allow 20-30 seconds for Heroku to warm up.)
+
 You may access the Trello planning board at [this link](https://trello.com/b/DWa6rOIG/bugtracker).
 
 ## List of technologies
@@ -11,8 +13,9 @@ You may access the Trello planning board at [this link](https://trello.com/b/DWa
 * Django
 * Python
 * HTML
+* Photo Upload via AWS S3
 * CSS/SCSS
-* Amazon Photo Upload via S3
+* Bootstrap
 
 ## ERD
 

@@ -1,13 +1,13 @@
 {% extends 'extended-base.html' %}
 
 {% block child %}
-    <h1 class="display-4 title center-text">Add Teammates to {{ project.name }}</h1>
+    <h1 class="display-4 title center-text addition-title">Add Teammates to {{ project.name }}</h1>
 
     <form action="{% url 'add_teammates' project.id %}" method="post" class="form">
         {% if error_messsage %}<p class="red-text">{{ error_message }}</p>{% endif %}
         {% csrf_token %}
         <div class="form-group">
-            <label for="teammates">Enter email addresses of new teammates for {{ project.name }} (seperated by commas):</label>
+            <label for="teammates">Enter email addresses of new teammates for {{ project.name }} (separated by commas):</label>
             <input type="text" name="teammates" class="form-control">
         </div>
         <input type="submit" value="Submit" class="btn btn-success">

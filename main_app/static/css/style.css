@@ -92,6 +92,14 @@ i {
   text-align: center;
 }
 
+.create-project-link {
+  margin: 1em 0;
+}
+
+.addition-title {
+  width: 80%;
+}
+
 /* PROJECT DISPLAY PAGE */
 
 .bug-preview span {
@@ -129,7 +137,7 @@ i {
 }
 
 .bug-right {
-  max-width: 50vw;
+  width: 50vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -261,6 +269,14 @@ footer {
 .social-link {
   font-size: 30px;
   margin-right: 5px;
+}
+
+.pb-4, .py-4 {
+  padding-bottom: .5rem!important;
+}
+
+.pt-4, .py-4 {
+  padding-top: .5rem!important;
 }
 
 
@@ -544,6 +560,45 @@ skew to change the 'thickness' of the glitch.*/
 
 }
 
+@media(max-width: 650px) {
+
+  .bug-display {
+    flex-direction: column;
+  }
+
+  .bug-left {
+    margin: 1.5rem 2em 0 2em;
+  }
+
+  .bug-creation-time {
+    display: block;
+    margin-left: 0;
+  }
+
+  .upload {
+    background: linear-gradient(rgb(240, 237, 237), rgb(210, 215, 216));
+  }
+
+  .upload p {
+    font-size: 14pxl
+  }
+
+  .bug-right {
+    width: 100vw;
+  }
+
+  .comment {
+    width: 90vw;
+    padding: 10px 15px;
+  }
+
+  .form {
+    width: 80vw;
+    margin: 10% auto 5% auto;
+  }
+
+}
+
 @media(max-width: 500px) {
 
   .landingPage-logo {
@@ -569,7 +624,7 @@ skew to change the 'thickness' of the glitch.*/
   }
 
   .title {
-    font-size: 50px;
+    font-size: 40px;
   }
 
   .add_teammates {

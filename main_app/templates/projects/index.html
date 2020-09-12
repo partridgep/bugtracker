@@ -11,7 +11,7 @@
                     <a href="{% url 'project_detail' project.id  %}">{{ project.name }}</a>
                 </div>
             {% endfor %}
-            <a href="{% url 'project_create' %}">+ Add Project</a>
+            <a href="{% url 'project_create' %}"><button class="btn btn-primary btn-sm create-project-link">+ Add Project</button></a>
         </div>
         <div class="col">
 
