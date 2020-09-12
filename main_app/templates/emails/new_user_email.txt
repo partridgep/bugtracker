@@ -1,4 +1,4 @@
-You've been added to {{ project_name }} on BugTracker.
+You've been invited to {{ project_name }} on BugTracker.
 
 BugTracker is a tool for teams to log their bugs in their projects' code. To start working on {{ project_name }}, please login to http://localhost:8080/ with the following credentials:
 

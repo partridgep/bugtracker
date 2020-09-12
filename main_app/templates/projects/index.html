@@ -17,27 +17,20 @@
 
             <div>
                 <h1>Unresolved Bugs</h1>
-                {% for project in projects %}
-                    {% for bug in project.bug_set.all %}
-                        {% if bug.resolved == False %}
-                        <p class="bug-preview"><a href="{% url 'bug_detail' bug.id %}">{{ bug.title }}</a> <span>/{{ project.name }}</span><span class="bug-preview-description">{{ bug.description |truncatewords:8 }}</span></p>
-                        {% endif %}
-                    {% endfor %}
-                {% if projects.count == 0 %}
+                {% for bug in unresolved_bugs %}
+                        <p class="bug-preview"><a href="{% url 'bug_detail' bug.id %}">{{ bug.title }}</a> <span>/{{ bug.project.name }}</span><span class="bug-preview-description">{{ bug.description |truncatewords:8 }}</span></p>
+                {% empty %}
                 <p>No unresolved bugs yet!</p>
-                {% endif %}
                 {% endfor %}
             </div>
 
             <div>
+                {% if resolved_bugs %}
                 <h1>Resolved Bugs</h1>
-                {% for project in projects %}
-                    {% for bug in project.bug_set.all %}
-                        {% if bug.resolved %}
-                        <p class="bug-preview"><a href="{% url 'bug_detail' bug.id %}">{{ bug.title }}</a> <span>/{{ project.name }}</span><span class="bug-preview-description">{{ bug.description |truncatewords:8 }}</span></p>
-                        {% endif %}
-                    {% endfor %}
+                {% for bug in resolved_bugs %}
+                        <p class="bug-preview"><a href="{% url 'bug_detail' bug.id %}">{{ bug.title }}</a> <span>/{{ bug.project.name }}</span><span class="bug-preview-description">{{ bug.description |truncatewords:8 }}</span></p>
                 {% endfor %}
+                {% endif %}
             </div>
 
         </div>

@@ -12,6 +12,11 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('email', 'username', 'password1', 'password2', )
 
+    def __init__(self):
+        super(SignUpForm, self).__init__()
+        self.fields['email'].widget.attrs.update({'autofocus': 'autofocus',
+            'required': 'required'})
+
 class BugForm(ModelForm):
     class Meta:
         model = Bug

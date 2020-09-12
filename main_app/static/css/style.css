@@ -95,6 +95,10 @@ hr {
   display: block;
 }
 
+.add_teammates {
+  margin-bottom: 20px;
+}
+
 /* BUG DISPLAY PAGE */
 
 .resolved {
@@ -136,8 +140,8 @@ hr {
 .upload::after {
   content: '';
   position: absolute;
-  top: 86%;
-  bottom: .6em;
+  top: 85%;
+  bottom: .8em;
   box-shadow: 0 10px 25px rgba(0,0,0,0.35);
   z-index: -1;
 }

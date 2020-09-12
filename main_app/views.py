@@ -21,6 +21,22 @@ from django.conf import settings
 S3_BASE_URL = "https://pp-bugtracker.s3.amazonaws.com/"
 BUCKET = "pp-bugtracker"
 
+# HELPER FUNCTION
+
+def generate_username(email):
+    username = email.split('@')[0]
+    try:
+      user_with_existing_username = User.objects.get(username = username)
+      print(f'user with existing username = {user_with_existing_username}')
+      if user_with_existing_username:
+        username += '1'
+    except:
+      pass
+    return username
+
+
+# VIEWS
+
 def home(request):
   return redirect('index')
 
@@ -49,19 +65,94 @@ def signup(request):
 @login_required
 def projects_index(request):
     projects = Project.objects.filter(teammates=request.user)
-    return render(request, 'projects/index.html', {'projects': projects})
+    unresolved_bugs = []
+    resolved_bugs = []
+    for project in projects:
+      for bug in project.bug_set.all():
+        if bug.resolved == False:
+          unresolved_bugs.append(bug)
+        else:
+          resolved_bugs.append(bug)
+    return render(request, 'projects/index.html', {
+      'projects': projects, 
+      'unresolved_bugs': unresolved_bugs,
+      'resolved_bugs': resolved_bugs
+      })
+
+@login_required
+def add_teammates(request, project_id):
+    projects = Project.objects.filter(teammates=request.user)
+    project = Project.objects.get(id=project_id)
+    user = current_user = request.user
+    teammates = []
+    for teammate in project.teammates.all():
+      if teammate.id != user.id:
+        teammates.append(teammate)
+
+    # if submitting the form
+    if request.method == "POST":
+      # get string with all emails
+      emailStr = request.POST.get("teammates")
+      # separate emails
+      emails = emailStr.split(", ")
+      print(emails)
+      # find ALL users in database
+      users_already_signed_up = User.objects.all()
+      # see if any match the list of emails
+      found_users = User.objects.filter(email__in = emails)
+      print(found_users)
+
+      for user in found_users:
+        # send invite email to all found users
+        msg_plain = render_to_string('emails/added_to_project.txt', {'project_name': project.name})
+        msg_html = render_to_string('emails/added_to_project.html', {'project_name': project.name})
+        send_mail(
+        f'BugTracker: You\'ve been added to {project.name}',
+        msg_plain,
+        settings.EMAIL_HOST_USER,
+        [f'{user.email}'],
+        html_message=msg_html,
+        fail_silently=False,
+        )
+        # add user to project
+        user_object = User.objects.get(email=user.email)
+        project.teammates.add(user_object)
+        project.save()
+        # finally remove email from list of emails
+        emails.remove(user.email)
+      
+      if len(emails) and emails[0] != '':
+        # remaining emails will be new users
+        for email in emails:
+          # create new user
+          random_password = User.objects.make_random_password()
+          generated_username = generate_username(email)
+          new_user = User.objects.create_user(generated_username, email, random_password)
+          new_user.save()
+          # send invite email
+          msg_plain = render_to_string('emails/new_user_email.txt', {'project_name': project.name, 'username': generated_username, 'password': random_password})
+          msg_html = render_to_string('emails/new_user_email.html', {'project_name': project.name, 'username': generated_username, 'password': random_password})
+          send_mail(
+          f'BugTracker: You\'ve been invited to {project.name}',
+          msg_plain,
+          settings.EMAIL_HOST_USER,
+          [f'{email}'],
+          html_message=msg_html,
+          fail_silently=False,
+          )
+          # add new user to project
+          new_user_object = User.objects.get(email=email)
+          project.teammates.add(new_user_object)
+          project.save()
+
+          # redirect to project page
+          return redirect('project_detail', project_id=project.id)
+
+    # if GET request, show the form
+    return render(request, 'projects/add_teammates.html', {'project': project})
 
 
-def generate_username(email):
-    username = email.split('@')[0]
-    try:
-      user_with_existing_username = User.objects.get(username = username)
-      print(f'user with existing username = {user_with_existing_username}')
-      if user_with_existing_username:
-        username += '1'
-    except:
-      pass
-    return username
+
 
 @login_required
 def add_project(request):

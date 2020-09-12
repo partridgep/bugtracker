@@ -16,6 +16,8 @@
         </div>
         {% endif %}
 
+        <a href="{% url 'add_teammates' project.id %}" class="btn btn-secondary btn-sm add_teammates">Add Teammates</a>
+
         {% if project.bug_set.count %}
         <div class="d-inline">
             <h3>Bugs:</h3>
