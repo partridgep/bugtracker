@@ -1,7 +1,7 @@
 {% extends 'extended-base.html' %}
 
 {% block child %}
-    <h1 class="display-2 title">Add New Bug to {{ project.name }}</h1>
+    <h1 class="display-2 title center-text">Add New Bug to {{ project.name }}</h1>
 
     <form action="{% url 'project_bug_create' project.id %}" method="post" class="form">
         {% if error_messsage %}<p class="red-text">{{ error_message }}</p>{% endif %}

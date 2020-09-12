@@ -1,7 +1,7 @@
 {% extends 'extended-base.html' %}
 
 {% block child %}
-    <h1 class="display-2 title">Enter New Project</h1>
+    <h1 class="display-2 title center-text">Enter New Project</h1>
 
     <form action="{% url 'project_create' %}" method="post" class="form">
         {% if error_messsage %}<p class="red-text">{{ error_message }}</p>{% endif %}

@@ -17,6 +17,11 @@ main {
   flex-shrink: none;
 }
 
+.center-text {
+  display: flex;
+  justify-content: center;
+}
+
 hr {
   width: 100%;
 }

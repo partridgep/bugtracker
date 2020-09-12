@@ -149,7 +149,10 @@ def add_teammates(request, project_id):
           return redirect('project_detail', project_id=project.id)
 
     # if GET request, show the form
-    return render(request, 'projects/add_teammates.html', {'project': project})
+    return render(request, 'projects/add_teammates.html', {
+      'project': project,
+      'projects': projects
+      })
 
 
 
