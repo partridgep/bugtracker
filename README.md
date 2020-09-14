@@ -4,7 +4,7 @@ A Django app for teams to log all the bugs in their projects' code.
 
 ## Getting started
 
-Click [here](https://git.heroku.com/bugtracker-pp.git) to get started (please allow 20-30 seconds for Heroku to warm up.)
+Click [here](https://bugtracker-pp.herokuapp.com/) to get started (please allow 20-30 seconds for Heroku to warm up.)
 
 You may access the Trello planning board at [this link](https://trello.com/b/DWa6rOIG/bugtracker).
 
