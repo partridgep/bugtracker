@@ -19,19 +19,18 @@ You may access the Trello planning board at [this link](https://trello.com/b/DWa
 
 ## ERD
 
-![ERD](https://i.imgur.com/PUq8e3P.png)
+![ERD](https://i.imgur.com/5nAPdUm.png)
 
-## Wireframes
+## Wireframes & Screenshots
 
-Signup Page:
-![Signup Page](https://i.imgur.com/u9GVzww.png)
+![Signup Page](https://i.imgur.com/fSe2VGb.png)
 
-![Main Display Page](https://i.imgur.com/CMqjhZP.png)
+![Main Display Page](https://i.imgur.com/aiAWdzZ.png)
 
-![New Project Page](https://i.imgur.com/A16M7rp.png)
+![New Project Page](https://i.imgur.com/XnuWX4A.png)
 
-![Project Display Page](https://i.imgur.com/Ez6h0kW.png)
+![Project Display Page](https://i.imgur.com/JOhW9Yz.png)
 
-![New Bug Page](https://i.imgur.com/2BZ52k4.png)
+![New Bug Page](https://i.imgur.com/OqWVcXn.png)
 
-![Bug Display Page](https://i.imgur.com/JRtkE6P.png)
+![Bug Display Page](https://i.imgur.com/a4phLR0.png)
