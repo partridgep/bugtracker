@@ -43,6 +43,7 @@ def home(request):
 def signup(request):
     error_message = ''
     if request.method == 'POST':
+        print(request.POST)
          # Create a user form object
          # that includes data from the browser
         form = SignUpForm(request.POST)
