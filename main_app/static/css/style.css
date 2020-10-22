@@ -126,6 +126,10 @@ i {
   font-style: italic;
 }
 
+.delete {
+  margin-bottom: 20px;
+}
+
 .bug-display {
   display: flex;
   justify-content: space-evenly;

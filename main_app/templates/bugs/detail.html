@@ -8,6 +8,7 @@
     
             {% if bug.resolved %}
             <p class="resolved"> Resolved! </p>
+            <a href="{% url 'delete_bug' bug.id %}"><button type="button" class="btn btn-danger delete">Delete</button></a>
             {% endif %}
     
             <p>Logged by {{ bug.user }} <span class="bug-creation-time">{{bug.created_at}}</span></p>

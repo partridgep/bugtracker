@@ -156,8 +156,6 @@ def add_teammates(request, project_id):
       })
 
 
-
-
 @login_required
 def add_project(request):
     # get all projects
@@ -251,6 +249,29 @@ def project_detail(request, project_id):
     })
 
 @login_required
+def create_bug(request):
+    projects = Project.objects.filter(teammates=request.user)
+    user = request.user
+
+    # if submitting the form
+    if request.method == "POST":
+      # create bug in database
+      title = request.POST.get("bug_title")
+      description = request.POST.get("description")
+      file_name = request.POST.get("file_name")
+      project_id = request.POST.get("project")
+      print(project_id)
+      project = Project.objects.get(id=project_id)
+      bug = Bug(title=title, description=description, file_name=file_name, project=project, user=user)
+      bug.save()
+
+      # redirect to bug detail page
+      return redirect('bug_detail', bug_id=bug.id)
+
+    # if GET request, show the form
+    return render(request, 'bugs/create_bug.html', {'projects': projects})
+
+@login_required
 def add_bug_to_project(request, project_id):
     projects = Project.objects.filter(teammates=request.user)
     project = Project.objects.get(id=project_id)
@@ -258,13 +279,12 @@ def add_bug_to_project(request, project_id):
 
     # if submitting the form
     if request.method == "POST":
-      # create project in database
+      # create byg in database
       title = request.POST.get("bug_title")
       description = request.POST.get("description")
       file_name = request.POST.get("file_name")
       bug = Bug(title=title, description=description, file_name=file_name, project=project, user=user)
       bug.save()
-      # print(bug.seen_by_bug_set.all())
 
       # redirect to bug detail page
       return redirect('bug_detail', bug_id=bug.id)
@@ -291,6 +311,13 @@ def resolve_bug(request, bug_id):
   bug.resolved = True
   bug.save()
   return redirect('bug_detail', bug_id=bug_id)
+
+@login_required
+def delete_bug(request, bug_id):
+  projects = Project.objects.filter(teammates=request.user)
+  bug = Bug.objects.get(id=bug_id)
+  bug.delete()
+  return redirect('index')
 
 @login_required
 def add_screenshot(request, bug_id):
