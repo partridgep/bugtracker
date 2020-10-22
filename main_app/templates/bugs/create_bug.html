@@ -3,6 +3,8 @@
 {% block child %}
     <h1 class="display-4 title center-text addition-title">Create New Bug</h1>
 
+    {% if projects|length > 0 %}
+
     <form action="{% url 'create_bug' %}" method="post" class="form">
         {% if error_messsage %}<p class="red-text">{{ error_message }}</p>{% endif %}
         {% csrf_token %}
@@ -30,5 +32,10 @@
         </div>
         <input type="submit" value="Submit" class="btn btn-success">
     </form>
+
+    {% else %}
+        <p class="center-text">You need to create a project first.</p>
+        <a class="center-text" href="{% url 'project_create' %}"><button class="btn btn-primary btn-sm create-project-link">+ Add Project</button></a>
+    {% endif %}
 
 {% endblock %}
