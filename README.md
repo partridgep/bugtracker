@@ -12,6 +12,7 @@ You may access the Trello planning board at [this link](https://trello.com/b/DWa
 
 * Django
 * Python
+* PostgreSQL
 * HTML
 * Photo Upload via AWS S3
 * CSS/SCSS
